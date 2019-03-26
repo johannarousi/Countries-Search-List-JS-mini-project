@@ -1,9 +1,9 @@
-let text = document.querySelector(".text");
 let wrapper = document.querySelector(".wrapper");
 let startWordBtn = document.querySelector("#start-word");
 let anyWordBtn = document.querySelector("#any-word");
 let reverseBtn = document.querySelector(".reverse");
 let searchInput = document.querySelector(".search");
+let text = document.querySelector(".text");
 
 //create the random color -generator
 const rgbColorGenerator = function() {
@@ -12,7 +12,6 @@ const rgbColorGenerator = function() {
   let green = Math.floor(Math.random() * 255).toString();
   let color = `rgb(${red}, ${blue}, ${green})`;
   return color;
-  rgb(787, 989, 898);
 };
 
 // create the default divs with country-names and random background-color
@@ -75,11 +74,13 @@ const reverseCountries = () => {
 // function for the reverse-button
 function buttonFunction() {
   let i = document.querySelector("i");
-  if (i.className === "fas fa-long-arrow-alt-down") {
+  if (i.className === "fas fa-sort-alpha-down") {
     reverseCountries();
-    i.className = "fas fa-long-arrow-alt-up";
-  } else if (i.className === "fas fa-long-arrow-alt-up") {
-    i.className = "fas fa-long-arrow-alt-down";
+    i.className = "fas fa-sort-alpha-up";
+    reverseBtn.style.backgroundColor = "#5e360a";
+  } else if (i.className === "fas fa-sort-alpha-up") {
+    i.className = "fas fa-sort-alpha-down";
+    reverseBtn.style.backgroundColor = "#b37c3c";
     defaultFunction();
   }
 }
@@ -95,12 +96,24 @@ const searchCountryContains = () => {
     if (upperCaseCountry.includes(input)) {
       arrCountries.push(countries[i]);
       let box = document.createElement("div");
-      box.style.backgroundColor = rgbColorGenerator();
+      let color = rgbColorGenerator();
+      let theColor = color;
+      box.style.backgroundColor = theColor;
       box.style.height = "100px";
       box.style.width = "400px";
       box.style.margin = "auto";
       box.textContent = countries[i];
-      // box.style.color = blackOrWhite();
+      const blackOrWhite = () => {
+        let red = theColor.slice(4, 7);
+        let green = theColor.slice(9, 12);
+        let blue = theColor.slice(14, 17);
+        if (red + green + blue > 400) {
+          return "black";
+        } else {
+          return "white";
+        }
+      };
+      box.style.color = blackOrWhite();
       wrapper.appendChild(box);
     }
     text.innerHTML = `Countries containing ${searchInput.value} are ${
@@ -118,12 +131,24 @@ const searchCountryStarts = () => {
     if (upperCaseCountry.startsWith(input)) {
       arrCountries.push(countries[i]);
       let box = document.createElement("div");
-      box.style.backgroundColor = rgbColorGenerator();
+      let color = rgbColorGenerator();
+      let theColor = color;
+      box.style.backgroundColor = theColor;
       box.style.height = "100px";
       box.style.width = "400px";
       box.style.margin = "auto";
       box.textContent = countries[i];
-      // box.style.color = blackOrWhite();
+      const blackOrWhite = () => {
+        let red = theColor.slice(4, 7);
+        let green = theColor.slice(9, 12);
+        let blue = theColor.slice(14, 17);
+        if (red + green + blue > 400) {
+          return "black";
+        } else {
+          return "white";
+        }
+      };
+      box.style.color = blackOrWhite();
       wrapper.appendChild(box);
     }
     text.innerHTML = `Countries start with ${searchInput.value} are ${
@@ -140,12 +165,8 @@ const buttonCheck = () => {
   searchInput.removeEventListener("keyup", searchCountryStarts);
   searchInput.removeEventListener("keyup", searchCountryContains);
   if (anyWordBtn.checked === true) {
-    console.log("anyword");
-    // document.getElementsByClassName("start-word").checked = false;
     searchInput.addEventListener("keyup", searchCountryContains);
   } else if (startWordBtn.checked === true) {
-    console.log("start");
-    //document.getElementsByClassName("any-word").checked = false;
     searchInput.addEventListener("keyup", searchCountryStarts);
   }
 };
